@@ -93,14 +93,15 @@ void update()
     {
         if (search == listtaches[i].id)
         {
-            printf("Entrer le titre : ");
-            scanf(" %[^\n]", listtaches[i].titre);
 
             printf("Entrer le discription : ");
             scanf(" %[^\n]", listtaches[i].discription);
 
             printf("Entrer le status : ");
             scanf(" %[^\n]", listtaches[i].status);
+
+            printf("Entrer le deadline dd-hh-mm : \n");
+            scanf("%d-%d-%d", &dead_line_list[i].day, &dead_line_list[i].hour, &dead_line_list[i].minutes);
         }
     }
 }
