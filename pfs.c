@@ -94,13 +94,13 @@ void update()
         if (search == listtaches[i].id)
         {
             printf("Entrer le titre : ");
-            scanf("%s \n", listtaches[i].titre);
+            scanf(" %[^\n]", listtaches[i].titre);
 
             printf("Entrer le discription : ");
-            scanf("%s \n", listtaches[i].discription);
+            scanf(" %[^\n]", listtaches[i].discription);
 
             printf("Entrer le status : ");
-            scanf("%s \n", listtaches[i].status);
+            scanf(" %[^\n]", listtaches[i].status);
         }
     }
 }
@@ -154,7 +154,7 @@ void menu()
         }
         else if (choix == 3)
         {
-            // update();
+            update();
         }
         else if (choix == 4)
         {
