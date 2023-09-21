@@ -2,7 +2,8 @@
 #include <string.h>
 #include <ctype.h>
 int nbr_de_taches = 0;
-int id = 1;
+int nb = 0;
+// int id = 1;
 
 typedef struct Deadline
 {
@@ -23,45 +24,48 @@ Deadline dead_line_list[50];
 
 void ajouter()
 {
+
     printf("Entrer nombres de taches:");
     scanf("%d", &nbr_de_taches);
+
     for (int i = 0; i < nbr_de_taches; i++)
     {
-        printf("\n========Entrer %d tache ========   \n", i + 1);
+        printf("\n========Entrer tache ========   \n");
 
         printf("Entrer le titre : ");
-        scanf(" %[^\n]", listtaches[i].titre);
+        scanf(" %[^\n]", listtaches[nb].titre);
 
         printf("Entrer le discription : ");
-        scanf(" %[^\n]", listtaches[i].discription);
+        scanf(" %[^\n]", listtaches[nb].discription);
 
         printf("Entrer le status : ");
-        scanf(" %[^\n]", listtaches[i].status);
+        scanf(" %[^\n]", listtaches[nb].status);
 
         printf("Entrer le deadline dd-hh-mm : \n");
-        scanf("%d-%d-%d", &dead_line_list[i].day, &dead_line_list[i].hour, &dead_line_list[i].minutes);
-        listtaches[i].id = id;
-        id++;
+        scanf("%d-%d-%d", &dead_line_list[nb].day, &dead_line_list[nb].hour, &dead_line_list[nb].minutes);
+
+        listtaches[nb].id = nb + 1;
+        nb++;
     }
 }
 
 void afficher()
 {
-    ToDo swap;
+    // ToDo swap;
 
-    for (int i = 0; i < nbr_de_taches; i++)
-    {
-        for (int j = i + 1; j < nbr_de_taches; j++)
-        {
-            if (strcmp(listtaches[i].titre, listtaches[j].titre) > 0)
-            {
-                swap = listtaches[i];
-                listtaches[i] = listtaches[j];
-                listtaches[j] = swap;
-            }
-        }
-    }
-    for (int i = 0; i < nbr_de_taches; i++)
+    // for (int i = 0; i < nbr_de_taches; i++)
+    // {
+    //     for (int j = i + 1; j < nbr_de_taches; j++)
+    //     {
+    //         if (strcmp(listtaches[i].titre, listtaches[j].titre) > 0)
+    //         {
+    //             swap = listtaches[i];
+    //             listtaches[i] = listtaches[j];
+    //             listtaches[j] = swap;
+    //         }
+    //     }
+    // }
+    for (int i = 0; i < nb; i++)
     {
         printf("\n========================= TACHE ========================= \n");
         printf("\n Id: %d", listtaches[i].id);
@@ -77,7 +81,7 @@ void update()
     int search;
     printf("Entrez le numero de tache a modifier : ");
     scanf("%d", &search);
-    for (int i = 0; i < nbr_de_taches; i++)
+    for (int i = 0; i < nb; i++)
     {
         if (search == listtaches[i].id)
         {
@@ -143,16 +147,10 @@ void supprimer()
     int s;
     printf("Entrez le id de tache a supprimer : ");
     scanf("%d", &s);
-    for (int i = 0; i < nbr_de_taches; i++)
+    for (int i = s - 1; i < nb - 1; i++)
     {
-        if (s == listtaches[i].id)
-        {
-            strcpy(listtaches[i].titre, null);
-            strcpy(listtaches[i].discription, null);
-            strcpy(listtaches[i].status, null);
-            nbr_de_taches--;
-            break;
-        }
+        listtaches[i] = listtaches[i + 1];
+        nb--;
     }
 }
 

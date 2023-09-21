@@ -1,26 +1,17 @@
 #include <stdio.h>
-
+#include <string.h>
+#include <ctype.h>
 int main(int argc, char const *argv[])
 {
-    int list[6] = {1, 2, 3, 4, 5};
-
-    void supprimerR()
+    char list[26][25] = {"abdelkjagdyajkdhagdj"};
+    char la = 'a';
+    for (int i = 0; i < 26; i++)
     {
-        for (int i = 0; i < 5; i++)
+        if (strcmp(list[i], la) == 0)
         {
-            if (list[i] == list[i + 1])
-            {
-                for (int i = 0; i < i - 1; i++)
-                {
-                    list[i] = list[i + 1];
-                }
-            }
+            printf("%c\n", toupper(list[i]));
         }
     }
-    supprimerR();
-    for (int i = 0; i < 5; i++)
-    {
-        printf("%d\n", list[i]);
-    }
+
     return 0;
 }
