@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 int nbr_de_taches = 0;
 int id = 1;
 
@@ -60,22 +61,9 @@ void afficher()
             }
         }
     }
-    // for (int i = 0; i < nbr_de_taches; i++)
-    // {
-    //     for (int j = i + 1; j < nbr_de_taches; j++)
-    //     {
-    //         if ()
-    //         {
-    //             swap = listtaches[i];
-    //             listtaches[i] = listtaches[j];
-    //             listtaches[j] = swap;
-    //         }
-    //     }
-    // }
     for (int i = 0; i < nbr_de_taches; i++)
     {
-
-        printf("\n================ la %d taches est : ================ \n", i + 1);
+        printf("\n========================= TACHE ========================= \n");
         printf("\n Id: %d", listtaches[i].id);
         printf("\n Titre: %s", listtaches[i].titre);
         printf("\n Discription: %s", listtaches[i].discription);
@@ -108,25 +96,64 @@ void update()
 void chercher()
 {
     int chercherindex;
-    printf("Entrez le id de tache a chercher : ");
-    scanf("%d", &chercherindex);
-    for (int i = 0; i < nbr_de_taches; i++)
+    char cherchertitre[100];
+    int choixCher;
+    printf(" \n \t \t \t \t    **************** \n \n");
+    printf("\n[1] si vous souhaitez effectuer une recherche avec le id : \n");
+    printf("[2] si vous souhaitez effectuer une recherche avec le titre : \n \n");
+    scanf(" %d", &choixCher);
+    if (choixCher == 1)
     {
-        if (chercherindex == listtaches[i].id)
+        printf("Entrez le id de tache a chercher : ");
+        scanf("%d", &chercherindex);
+        for (int i = 0; i < nbr_de_taches; i++)
         {
-            printf("\n Titre: %s", listtaches[i].titre);
-            printf("\n Discription: %s", listtaches[i].discription);
-            printf("\n Status: %s ", listtaches[i].status);
-            printf("\n deadline: %d-%d-%d \n \n", dead_line_list[i].day, dead_line_list[i].hour, dead_line_list[i].minutes);
+            if (choixCher == 1)
+            {
+                if (chercherindex == listtaches[i].id)
+                {
+                    printf("\n Titre: %s", listtaches[i].titre);
+                    printf("\n Discription: %s", listtaches[i].discription);
+                    printf("\n Status: %s ", listtaches[i].status);
+                    printf("\n deadline: %d-%d-%d \n \n", dead_line_list[i].day, dead_line_list[i].hour, dead_line_list[i].minutes);
+                }
+            }
+        }
+    }
+    if (choixCher == 2)
+    {
+        printf("Entrez le titre de tache a chercher :");
+        scanf("%s", &cherchertitre);
+        for (int i = 0; i < nbr_de_taches; i++)
+        {
+            if (strcmp(cherchertitre, listtaches[i].titre) == 0)
+            {
+                printf("\n Titre: %s", listtaches[i].titre);
+                printf("\n Discription: %s", listtaches[i].discription);
+                printf("\n Status: %s ", listtaches[i].status);
+                printf("\n deadline: %d-%d-%d \n \n", dead_line_list[i].day, dead_line_list[i].hour, dead_line_list[i].minutes);
+            }
         }
     }
 }
 
 void supprimer()
 {
+    char null[10] = {"\0"};
     int s;
-    printf("Entrez le numero de tache a supprimer : ");
+    printf("Entrez le id de tache a supprimer : ");
     scanf("%d", &s);
+    for (int i = 0; i < nbr_de_taches; i++)
+    {
+        if (s == listtaches[i].id)
+        {
+            strcpy(listtaches[i].titre, null);
+            strcpy(listtaches[i].discription, null);
+            strcpy(listtaches[i].status, null);
+            nbr_de_taches--;
+            break;
+        }
+    }
 }
 
 void menu()
@@ -135,7 +162,7 @@ void menu()
     do
     {
         printf("\n ================================================================================================================================================================================ ");
-        printf("\n  \t \t \t \t \t \t  \t \t \n Menu d'application \n");
+        printf("\n  \t \t \t \t \t \t  \t \t  Menu d'application \n");
         printf("\n ================================================================================================================================================================================\n");
         printf("\n\t\t[1] Ajouter une Tache \n");
         printf("\n\t\t[2] Afficher les Taches \n");
@@ -163,6 +190,7 @@ void menu()
         }
         else if (choix == 5)
         {
+            supprimer();
         }
     } while (choix != 6);
 }
