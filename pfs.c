@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <strings.h>
 #include <ctype.h>
 int nbr_de_taches = 0;
 int nb = 0;
@@ -17,11 +18,12 @@ typedef struct ToDo
     char titre[100];
     char discription[1000];
     char status[100];
+    Deadline deadl;
 } ToDo;
 
 ToDo listtaches[50];
-Deadline dead_line_list[50];
-
+ToDo swap;
+ToDo deadlineswap;
 void ajouter()
 {
 
@@ -38,41 +40,102 @@ void ajouter()
         printf("Entrer le discription : ");
         scanf(" %[^\n]", listtaches[nb].discription);
 
-        printf("Entrer le status : ");
+        printf("Entrer le status(do, doing, done) : ");
         scanf(" %[^\n]", listtaches[nb].status);
 
         printf("Entrer le deadline dd-hh-mm : \n");
-        scanf("%d-%d-%d", &dead_line_list[nb].day, &dead_line_list[nb].hour, &dead_line_list[nb].minutes);
+        scanf("%d-%d-%d", &listtaches[nb].deadl.day, &listtaches[nb].deadl.hour, &listtaches[nb].deadl.minutes);
 
         listtaches[nb].id = nb + 1;
         nb++;
     }
 }
 
-void afficher()
+void afficher_alphabetique()
 {
-    // ToDo swap;
-
-    // for (int i = 0; i < nbr_de_taches; i++)
-    // {
-    //     for (int j = i + 1; j < nbr_de_taches; j++)
-    //     {
-    //         if (strcmp(listtaches[i].titre, listtaches[j].titre) > 0)
-    //         {
-    //             swap = listtaches[i];
-    //             listtaches[i] = listtaches[j];
-    //             listtaches[j] = swap;
-    //         }
-    //     }
-    // }
-    for (int i = 0; i < nb; i++)
+    for (int i = 0; i < nb - 1; i++)
+    {
+        for (int j = i + 1; j < nb; j++)
+        {
+            if (strcasecmp(listtaches[i].titre, listtaches[j].titre) > 0)
+            {
+                swap = listtaches[i];
+                listtaches[i] = listtaches[j];
+                listtaches[j] = swap;
+            }
+        }
+    }
+    for (int x = 0; x < nb; x++)
     {
         printf("\n========================= TACHE ========================= \n");
-        printf("\n Id: %d", listtaches[i].id);
-        printf("\n Titre: %s", listtaches[i].titre);
-        printf("\n Discription: %s", listtaches[i].discription);
-        printf("\n Status: %s ", listtaches[i].status);
-        printf("\n deadline: %d-%d-%d \n \n", dead_line_list[i].day, dead_line_list[i].hour, dead_line_list[i].minutes);
+        printf("\n Id: %d", listtaches[x].id);
+        printf("\n Titre: %s", listtaches[x].titre);
+        printf("\n Discription: %s", listtaches[x].discription);
+        printf("\n Status: %s ", listtaches[x].status);
+        printf("\n deadline: %d-%d-%d \n \n", listtaches[x].deadl.day, listtaches[x].deadl.hour, listtaches[x].deadl.minutes);
+    }
+}
+void afficher_deadline()
+{
+    for (int i = 0; i < nb - 1; i++)
+    {
+        for (int j = i + 1; j < nb; j++)
+        {
+            if (listtaches[i].deadl.day > listtaches[j].deadl.day)
+            {
+                deadlineswap = listtaches[i];
+                listtaches[i] = listtaches[j];
+                listtaches[j] = deadlineswap;
+            }
+        }
+    }
+    for (int x = 0; x < nb; x++)
+    {
+        printf("\n========================= TACHE ========================= \n");
+        printf("\n Id: %d", listtaches[x].id);
+        printf("\n Titre: %s", listtaches[x].titre);
+        printf("\n Discription: %s", listtaches[x].discription);
+        printf("\n Status: %s ", listtaches[x].status);
+        printf("\n deadline: %d-%d-%d \n \n", listtaches[x].deadl.day, listtaches[x].deadl.hour, listtaches[x].deadl);
+    }
+}
+
+void afficher_trio_jour()
+{
+    for (int i = 0; i < nbr_de_taches; i++)
+    {
+        if (listtaches[i].deadl.day < 3)
+        {
+            printf("\n========================= TACHE ========================= \n");
+            printf("\n Id: %d", listtaches[i].id);
+            printf("\n Titre: %s", listtaches[i].titre);
+            printf("\n Discription: %s", listtaches[i].discription);
+            printf("\n Status: %s ", listtaches[i].status);
+            printf("\n deadline: %d-%d-%d \n \n", listtaches[i].deadl.day, listtaches[i].deadl.hour, listtaches[i].deadl);
+        }
+    }
+}
+
+void afficher()
+{
+
+    int afichchiox;
+    printf("\n\n [1] si vous souhaitez Trier les taches par ordre alphabetique : \n");
+    printf("\n [2] si vous souhaitez Trier les taches deadline : \n");
+    printf("\n [3] si vous souhaitez afficher les taches dont le deadline est dans 3 jours ou moins : \n");
+    scanf("%d", &afichchiox);
+
+    if (afichchiox == 1)
+    {
+        afficher_alphabetique();
+    }
+    if (afichchiox == 2)
+    {
+        afficher_deadline();
+    }
+    if (afichchiox == 3)
+    {
+        afficher_trio_jour();
     }
 }
 
@@ -93,7 +156,7 @@ void update()
             scanf(" %[^\n]", listtaches[i].status);
 
             printf("Entrer le deadline dd-hh-mm : \n");
-            scanf("%d-%d-%d", &dead_line_list[i].day, &dead_line_list[i].hour, &dead_line_list[i].minutes);
+            scanf("%d-%d-%d", &listtaches[i].deadl.day, &listtaches[i].deadl.hour, &listtaches[i].deadl.minutes);
         }
     }
 }
@@ -119,7 +182,7 @@ void chercher()
                     printf("\n Titre: %s", listtaches[i].titre);
                     printf("\n Discription: %s", listtaches[i].discription);
                     printf("\n Status: %s ", listtaches[i].status);
-                    printf("\n deadline: %d-%d-%d \n \n", dead_line_list[i].day, dead_line_list[i].hour, dead_line_list[i].minutes);
+                    printf("\n deadline: %d-%d-%d \n \n", listtaches[i].deadl.day, listtaches[i].deadl.hour, listtaches[i].deadl.minutes);
                 }
             }
         }
@@ -135,7 +198,7 @@ void chercher()
                 printf("\n Titre: %s", listtaches[i].titre);
                 printf("\n Discription: %s", listtaches[i].discription);
                 printf("\n Status: %s ", listtaches[i].status);
-                printf("\n deadline: %d-%d-%d \n \n", dead_line_list[i].day, dead_line_list[i].hour, dead_line_list[i].minutes);
+                printf("\n deadline: %d-%d-%d \n \n", listtaches[i].deadl.day, listtaches[i].deadl.hour, listtaches[i].deadl.minutes, listtaches[i].deadl);
             }
         }
     }
@@ -143,7 +206,6 @@ void chercher()
 
 void supprimer()
 {
-    char null[10] = {"\0"};
     int s;
     printf("Entrez le id de tache a supprimer : ");
     scanf("%d", &s);
@@ -152,6 +214,31 @@ void supprimer()
         listtaches[i] = listtaches[i + 1];
         nb--;
     }
+}
+
+void statique()
+{
+    char resulta[50] = "done";
+    int count = 0, index = 0, i;
+
+    printf("\n Le nombre total des taches est: %d", nb);
+    for (i = 0; i < nb; i++)
+    {
+
+        if (strcasecmp(listtaches[i].status, resulta) == 0)
+        {
+            count++;
+        }
+    }
+    printf("\n Le nombre total des taches completes : %d", count);
+    for (int j = 0; j < nb; j++)
+    {
+        if (strcasecmp(listtaches[j].status, resulta) > 0 || strcasecmp(listtaches[j].status, resulta) < 0)
+        {
+            index++;
+        }
+    }
+    printf("\n Le nombre total des taches incompletes : %d", index);
 }
 
 void menu()
@@ -167,7 +254,8 @@ void menu()
         printf("\n\t\t[3] Modifier une Tache \n");
         printf("\n\t\t[4] Rechercher une Tache \n");
         printf("\n\t\t[5] Supprimer une Tache \n");
-        printf("\n\t\t[6] Quitter \n");
+        printf("\n\t\t[6] Statistiques \n");
+        printf("\n\t\t[7] Quitter \n");
         printf("\n ================================================================================================================================================================================\n");
         scanf("\t \t \t %d", &choix);
         if (choix == 1)
@@ -190,7 +278,11 @@ void menu()
         {
             supprimer();
         }
-    } while (choix != 6);
+        else if (choix == 6)
+        {
+            statique();
+        }
+    } while (choix != 7);
 }
 
 int main(int argc, char const *argv[])
